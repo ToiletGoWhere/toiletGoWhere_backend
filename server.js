@@ -1,8 +1,9 @@
 'use strict'
 
-const PORT = 3000,
-    ROUTES = './routes/routes.js'
-// DB_ADDR = 'mongodb://localhost/toiletGoWhere';
+const config = require('./config'),
+    PORT = config.server.http_port,
+    ROUTES = config.server.routes
+    // DB_ADDR = config.db.addr;
 
 var express = require('express'),
     app = express(),
