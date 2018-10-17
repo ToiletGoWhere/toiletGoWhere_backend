@@ -2,34 +2,35 @@
 
 const config = require('./config'),
     PORT = config.server.http_port,
-    ROUTES = config.server.routes
-    // DB_ADDR = config.db.addr;
+    ROUTES = config.server.route,
+    DB_ADDR = config.db.addr;
 
-var express = require('express'),
+let express = require('express'),
     app = express(),
     session = require('express-session'),
     bodyParser = require('body-parser'),
     MongoStore = require('connect-mongo')(session);
 
 // Passport
-var passport = require('passport'),
-    LocalStratagy = require('passport-local').Strategy,
-    passportJwt = require('passport-jwt'),
-    JwtStrategy = passportJwt.Strategy,
-    ExtractJwt = passportJwt.ExtractJwt;
+let passport = require('passport'),
+    strategies = require('./authStrategy');
 
 // Mongoose
-var mongoose = require('mongoose');
-
+let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-// mongoose.connect(DB_ADDR);
+mongoose.connect(DB_ADDR, { useNewUrlParser: true });
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(passport.initialize());
+passport.use('user', strategies.userLocalStrategy)
+passport.use('userJwt', strategies.userJwtStrategy);
 
-var routes = require(ROUTES);
+let routes = require(ROUTES);
 routes(app, passport);
 
-app.listen(PORT);
+app.listen(PORT, async () => {
+    console.log("Server is listening to port " + PORT);
+});
