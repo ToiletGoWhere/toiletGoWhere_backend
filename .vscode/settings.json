@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "all"
+}
