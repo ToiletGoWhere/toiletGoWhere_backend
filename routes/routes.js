@@ -1,9 +1,9 @@
 'use strict'
 
-let multer = require('multer')
-// upload = multer({dest: './uploads/'})
+let multer = require('multer'),
+    upload = multer({dest: './utils/uploads/'})
 
-let config = require('../config');
+let config = require('../utils/config');
 
 let jwt = require('jsonwebtoken'),
     jwtSecret = config.secret.jwt;
@@ -58,9 +58,13 @@ module.exports = (app, passport) => {
      * ************
      */
 
-    app.post('/users', user.signup)
+    app.post('/users', user.signup);
+    app.get('/users/avatar/:id', user.getAvatar);
+
+    /* After Login*/
     app.route('/api/users')
         .get()
+    app.post('api/users/avatar', upload.single('avatar'), user.uploadAvatar);
 
     //TODO
 }
