@@ -1,6 +1,6 @@
 'use strict'
 
-const config = require('./config'),
+const config = require('./utils/config'),
     PORT = config.server.http_port,
     ROUTES = config.server.route,
     DB_ADDR = config.db.addr;
@@ -13,7 +13,7 @@ let express = require('express'),
 
 // Passport
 let passport = require('passport'),
-    strategies = require('./authStrategy');
+    strategies = require('./utils/authStrategy');
 
 // Mongoose
 let mongoose = require('mongoose');
