@@ -8,16 +8,15 @@ module.exports = mongoose.model(
     new Schema({
         email: String,
         password: String,
-        username: String,
-        gender: {
+        username: {
             type: String,
-            enum: ["male", "female", "unspecified"],
+            default: `User_${Math.floor(Math.random() * 10000)}`,
+        },
+        toiletType: {
+            type: String,
+            enum: ["male", "female", "unisex", "nursing", "accesible"],
             lowercase: true,
-            default: "unspecified",
         },
-        avatar: {
-            data: String,
-            contentType: String,
-        },
+        avatar: String,
     }),
 );

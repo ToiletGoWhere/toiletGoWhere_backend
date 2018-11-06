@@ -28,25 +28,43 @@ exports.signup = async (req, res) => {
     }
 };
 
+exports.getUser = async (req, res) => {
+    let id = req.params.uId;
+    let user = await User.findById(id);
+    user.password = null;
+    res.send(user);
+};
+
+exports.updateUser = async (req, res) => {
+    let id = req.user._id;
+    let body = req.body;
+    let update = {};
+    if (body.username) update.username = body.username;
+    if (body.toiletType) update.toiletType = body.toiletType;
+    try {
+        let done = await User.findByIdAndUpdate(id, update, { new: true });
+        res.send(done);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+};
+
 exports.uploadAvatar = async (req, res) => {
     let id = req.user._id;
     let update = {
-        avatar: {
-            data: fileUpload.getBase64Encoding(req.file),
-            contentType: req.file.mimetype,
-        },
+        avatar: fileUpload.getBase64Encoding(req.file),
     };
-    let user = await User.findByIdAndUpdate(id, update);
 
-    if (user instanceof Error)
+    try {
+        let user = await User.findByIdAndUpdate(id, update, { new: true });
+        res.send(user.avatar);
+    } catch (err) {
         res.status(404).send({ error: "Avatar uploading failed" });
-    else {
-        res.setHeader("Content-Type", update.avatar.contentType);
-        res.send(update.avatar.data);
     }
 };
 
 exports.getAvatar = async (req, res) => {
-    let id = req.params("id");
+    let id = req.params.uId;
     let user = await User.findById(id, "avatar");
+    res.send(user.avatar);
 };

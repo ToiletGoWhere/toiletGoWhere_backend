@@ -2,28 +2,26 @@
 
 let mongoose = require("mongoose"),
     Schema = mongoose.Schema;
-let FeedbackSchema = require("./feedbackSchema");
 
 module.exports = mongoose.model(
     "Toilet",
     new Schema({
         toiletType: {
             type: String,
-            enum: ["male", "female", "unisex", "nursing"],
+            enum: ["male", "female", "unisex", "nursing", "accesible"],
             lowercase: true,
             required: true,
         },
         location: {
-            type: Array, // [longitute, latitute, level]
-            validate: [
-                () => {
-                    return this.location.length <= 3;
-                },
-                `location length is ${this.location.length}`,
-            ],
+            type: Array, // [latitude, longitude, level]
+            validate: {
+                validator: val => val.length == 3,
+                message: val => `location length is ${val.length}`,
+            },
         },
-        confirmed: Boolean,
-        vote: Number,
-        rating: Number,
+        confirmed: { type: Boolean, default: false },
+        vote: { type: Number, default: 0 },
+        rating: { type: Number, default: 0 },
+        numFeedback: { type: Number, default: 0 },
     }),
 );

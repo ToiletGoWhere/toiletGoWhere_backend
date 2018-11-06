@@ -6,7 +6,7 @@ let UserSchema = require("./userSchema"),
     ToiletSChema = require("./toiletSchema");
 
 module.exports = mongoose.model(
-    "Feedback",
+    "Report",
     new Schema({
         user: {
             type: Schema.Types.ObjectId,
@@ -17,12 +17,7 @@ module.exports = mongoose.model(
             ref: ToiletSChema,
         },
         content: String,
-        rating: {
-            type: Number,
-            validate: {
-                validator: val => val.value >= 0 && val.value <= 5,
-                message: val => `${val.value} is not a valid rating!`,
-            },
-        },
+        reportType: String,
+        pictures: [String],
     }),
 );
