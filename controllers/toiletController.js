@@ -2,9 +2,10 @@
 
 let Toilet = require("../models/toiletSchema"),
     Feedback = require("../models/feedbackSchema"),
-    Report = require("../models/reportSchema"),
-    User = require("../models/userSchema"),
-    fileUpload = require("../utils/fileUpload");
+    Report = require("../models/reportSchema");
+
+let fileUpload = require("../utils/fileUpload"),
+    mailer = require("../utils/mailer");
 
 let locationParser = (lat, lng, lvl) => {
     if (
@@ -198,6 +199,12 @@ exports.submitReport = async (req, res) => {
 
     try {
         let done = await report.save();
+        let toilet = await Toilet.findById(body.tId);
+        mailer.sendMail({
+            lat: toilet.location[0],
+            lng: toilet.location[1],
+            pictures: pictures,
+        });
         res.send(done);
     } catch (err) {
         res.status(400).send(err);
