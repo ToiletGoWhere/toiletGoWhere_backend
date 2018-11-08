@@ -11,6 +11,27 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     MongoStore = require("connect-mongo")(session);
 
+let cors = require("cors");
+
+var corsOptions = {
+    origin: function(origin, callback) {
+        if (
+            origin &&
+            (/^https?\:\/\/127\.0\.0/.test(origin) ||
+                /^chrome-extension:\/\//.test(origin) ||
+                /^https?\:\/\/localhost/.test(origin))
+        ) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    credentials: true,
+};
+
+// Enable cors if frontend is deployed on the cloud
+// app.use(cors(corsOptions));
+
 // Passport
 let passport = require("passport"),
     strategies = require("./utils/authStrategy");
