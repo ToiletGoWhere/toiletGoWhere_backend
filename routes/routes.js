@@ -69,6 +69,7 @@ module.exports = (app, passport) => {
      * **************
      */
     app.get("/api/toilets/:lat/:lng/:lvl/:type", toilet.getToilets);
+    app.get("/api/toilets/:lat/:lng", toilet.getToilets);
 
     /* After Login */
     app.post("/api/auth/toilets", toilet.addToilet);
