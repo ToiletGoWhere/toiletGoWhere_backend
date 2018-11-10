@@ -1,6 +1,6 @@
 "use strict";
 
-let User = require("../models/userSchema"),
+let User = require("../models/userModel"),
     bcrypt = require("bcrypt"),
     fileUpload = require("../utils/fileUpload");
 

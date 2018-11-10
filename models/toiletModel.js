@@ -21,7 +21,15 @@ module.exports = mongoose.model(
         },
         confirmed: { type: Boolean, default: false },
         vote: { type: Number, default: 0 },
-        rating: { type: Number, default: 0 },
+        rating: {
+            type: Number,
+            default: 0,
+            validate: {
+                validator: val => val >= 0 && val <= 5,
+                message: val => `${val.value} is not a valid rating!`,
+            },
+            set: val => val.toFixed(2),
+        },
         numFeedback: { type: Number, default: 0 },
     }),
 );

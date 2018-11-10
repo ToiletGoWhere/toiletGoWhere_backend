@@ -6,7 +6,7 @@ let bcrypt = require("bcrypt"),
     keystore = require("./keystore"),
     jwtSecret = keystore.jwt;
 
-let User = require("../models/userSchema");
+let User = require("../models/userModel");
 
 exports.userLocalStrategy = new LocalStrategy(
     {

@@ -1,8 +1,9 @@
 "use strict";
 
-let Toilet = require("../models/toiletSchema"),
-    Feedback = require("../models/feedbackSchema"),
-    Report = require("../models/reportSchema");
+let Toilet = require("../models/toiletModel"),
+    Feedback = require("../models/feedbackModel"),
+    User = require("../models/userModel"),
+    Report = require("../models/reportModel");
 
 let fileUpload = require("../utils/fileUpload"),
     mailer = require("../utils/mailer");
@@ -34,7 +35,7 @@ let toRadians = val => val * (Math.PI / 180);
 let getDistance = (origin, dest) => {
     let lat1 = origin[0],
         lng1 = origin[1],
-        lvl1 = origin[2],
+        lvl1 = origin[2] | 1,
         lat2 = dest[0],
         lng2 = dest[1],
         lvl2 = dest[2];
@@ -85,10 +86,9 @@ exports.confirmToilet = async (req, res) => {
         return;
     }
 
-    let vote = ++toilet.vote;
-    if (vote >= 5) {
-        toilet.confirmed = true;
-    }
+    toilet.vote++;
+    toilet.confirmed = toilet.vote >= 5 ? true : false;
+
     try {
         let done = await toilet.save();
         res.send(done);
@@ -101,11 +101,24 @@ exports.getToilets = async (req, res) => {
     let lat = req.params.lat,
         lng = req.params.lng,
         lvl = req.params.lvl,
-        type = req.params.type.toLowerCase();
+        type = req.params.type;
 
-    let me = [lat, lng, lvl];
+    lat = parseFloat(lat).toFixed(6);
+    lng = parseFloat(lng).toFixed(6);
 
-    let toilets = await Toilet.find({ toiletType: { $in: [type, "unisex"] } });
+    let me, toilets;
+
+    if (!type && req.user_id) {
+        let user = User.findById(req.user._id);
+        type = user.toiletType;
+    }
+
+    me = lvl ? [lat, lng, parseInt(lvl)] : [lat, lng];
+
+    toilets = type
+        ? await Toilet.find({ toiletType: { $in: [type, "unisex"] } })
+        : await Toilet.find();
+
     let distanceArr = [];
     toilets.forEach((t, i) => {
         distanceArr.push({
@@ -164,20 +177,24 @@ exports.addFeedback = async (req, res) => {
 
 exports.getFeedback = async (req, res) => {
     try {
-        let feedback = await Feedback.findById(req.params.fId);
+        let feedback = await Feedback.findById(req.params.fId)
+            .populate("user", "username email")
+            .exec();
         res.send(feedback);
     } catch (err) {
-        res.status(404).send(new Error("Invalid Feedback ID"));
+        res.status(404).send({ error: "Invalid Feedback ID" });
     }
 };
 
 exports.getFeedbacks = async (req, res) => {
     try {
         let toilet = await Toilet.findById(req.params.tId);
-        let feedbacks = await Feedback.find({ toilet: toilet });
+        let feedbacks = await Feedback.find({ toilet: toilet })
+            .populate("user", "username email")
+            .exec();
         res.send(feedbacks);
     } catch (err) {
-        res.status(400).send(new Error("Unexpected Database Error"));
+        res.status(400).send({ error: "Unexpected Database Error" });
     }
 };
 
