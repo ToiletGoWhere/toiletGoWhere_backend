@@ -31,6 +31,8 @@ var corsOptions = {
 
 // Enable cors if frontend is deployed on the cloud
 // app.use(cors(corsOptions));
+// CORS for all
+app.use(cors());
 
 // Passport
 let passport = require("passport"),
