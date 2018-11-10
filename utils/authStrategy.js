@@ -3,8 +3,8 @@ let bcrypt = require("bcrypt"),
     passportJwt = require("passport-jwt"),
     JwtStrategy = passportJwt.Strategy,
     ExtractJwt = passportJwt.ExtractJwt,
-    config = require("./config"),
-    jwtSecret = config.secret.jwt;
+    keystore = require("./keystore"),
+    jwtSecret = keystore.jwt;
 
 let User = require("../models/userSchema");
 

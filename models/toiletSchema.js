@@ -8,7 +8,7 @@ module.exports = mongoose.model(
     new Schema({
         toiletType: {
             type: String,
-            enum: ["male", "female", "unisex", "nursing", "accesible"],
+            enum: ["male", "female", "unisex", "nursing", "accessible"],
             lowercase: true,
             required: true,
         },

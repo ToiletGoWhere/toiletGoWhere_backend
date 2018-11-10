@@ -3,7 +3,7 @@
 let mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 let UserSchema = require("./userSchema"),
-    ToiletSChema = require("./toiletSchema");
+    ToiletSchema = require("./toiletSchema");
 
 module.exports = mongoose.model(
     "Feedback",
@@ -14,7 +14,7 @@ module.exports = mongoose.model(
         },
         toilet: {
             type: Schema.Types.ObjectId,
-            ref: ToiletSChema,
+            ref: ToiletSchema,
         },
         content: String,
         rating: {
