@@ -14,7 +14,7 @@ module.exports = mongoose.model(
         },
         toiletType: {
             type: String,
-            enum: ["male", "female", "unisex", "nursing", "accesible"],
+            enum: ["male", "female", "unisex", "nursing", "accessible"],
             lowercase: true,
         },
         avatar: String,

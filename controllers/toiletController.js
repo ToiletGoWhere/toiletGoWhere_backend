@@ -20,7 +20,7 @@ let locationParser = (lat, lng, lvl) => {
 
 let toiletTypeParser = type => {
     if (
-        !["male", "female", "unisex", "nursing", "accesible"].includes(
+        !["male", "female", "unisex", "nursing", "accessible"].includes(
             type.toLowerCase(),
         )
     ) {

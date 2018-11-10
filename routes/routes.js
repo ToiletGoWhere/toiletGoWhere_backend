@@ -3,10 +3,10 @@
 let multer = require("multer"),
     upload = multer({ dest: "./utils/uploads/" });
 
-let config = require("../utils/config");
+let keystore = require("../utils/keystore");
 
 let jwt = require("jsonwebtoken"),
-    jwtSecret = config.secret.jwt;
+    jwtSecret = keystore.jwt;
 
 let user = require("../controllers/userController"),
     toilet = require("../controllers/toiletController");

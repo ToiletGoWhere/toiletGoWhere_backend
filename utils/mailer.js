@@ -1,6 +1,6 @@
 "use strict";
 let nodemailer = require("nodemailer");
-let gMapKey = require("../utils/config").secret.googleMapKey;
+let gMapKey = require("../utils/keystore").googleMapKey;
 
 exports.sendMail = async args => {
     let transporter = nodemailer.createTransport({
