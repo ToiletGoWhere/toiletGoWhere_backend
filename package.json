@@ -24,6 +24,6 @@
     },
     "scripts": {
         "dev": "nodemon server.js",
-        "start": "node server.js"
+        "start": "node --no-deprecation server.js"
     }
 }

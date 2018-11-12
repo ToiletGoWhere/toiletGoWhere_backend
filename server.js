@@ -45,6 +45,7 @@ mongoose.connect(
     DB_ADDR,
     { useNewUrlParser: true },
 );
+mongoose.set("useCreateIndex", true);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
