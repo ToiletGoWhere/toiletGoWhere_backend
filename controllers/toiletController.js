@@ -149,6 +149,9 @@ exports.addFeedback = async (req, res) => {
     let uId = req.user._id;
     let tId = req.params.tId,
         toilet = await Toilet.findById(tId);
+    if (!toilet) {
+        res.status(404).send({ error: "Toilet not found" });
+    }
     let body = req.body;
     let feedback = new Feedback({
         toilet: tId,
