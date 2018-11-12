@@ -1,12 +1,16 @@
 "use strict";
 
-var mongoose = require("mongoose"),
+let mongoose = require("mongoose"),
     Schema = mongoose.Schema;
+let profile_pic = require("../utils/config").default.profile_pic;
 
 module.exports = mongoose.model(
     "User",
     new Schema({
-        email: String,
+        email: {
+            type: String,
+            unique: true,
+        },
         password: String,
         username: {
             type: String,
@@ -17,6 +21,9 @@ module.exports = mongoose.model(
             enum: ["male", "female", "unisex", "nursing", "accessible"],
             lowercase: true,
         },
-        avatar: String,
+        avatar: {
+            type: String,
+            default: profile_pic,
+        },
     }),
 );

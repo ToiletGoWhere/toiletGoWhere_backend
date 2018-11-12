@@ -178,7 +178,7 @@ exports.addFeedback = async (req, res) => {
 exports.getFeedback = async (req, res) => {
     try {
         let feedback = await Feedback.findById(req.params.fId)
-            .populate("user", "username email")
+            .populate("user", "username email avatar")
             .exec();
         res.send(feedback);
     } catch (err) {
@@ -190,7 +190,7 @@ exports.getFeedbacks = async (req, res) => {
     try {
         let toilet = await Toilet.findById(req.params.tId);
         let feedbacks = await Feedback.find({ toilet: toilet })
-            .populate("user", "username email")
+            .populate("user", "username email avatar")
             .exec();
         res.send(feedbacks);
     } catch (err) {

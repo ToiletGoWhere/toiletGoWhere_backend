@@ -48,16 +48,18 @@ module.exports = (app, passport) => {
      */
 
     app.put("/api/login", function(req, res, next) {
+        let userController = user;
         passport.authenticate("user", { session: false }, (err, user, info) => {
             if (err || !user)
                 return res.status(400).json({
                     message: info,
                 });
 
-            req.login(user, { session: false }, err => {
+            req.login(user, { session: false }, async err => {
                 if (err) return res.send(err);
                 // generate a signed json web token with the contents of user object and return it in the response
-                const token = jwt.sign(user, jwtSecret);
+                const token = jwt.sign(user, jwtSecret, { expiresIn: "30d" });
+                user = await userController.getUser(user._id);
                 return res.json({ user, token });
             });
         })(req, res, next);

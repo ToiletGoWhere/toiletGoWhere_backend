@@ -28,11 +28,12 @@ exports.signup = async (req, res) => {
     }
 };
 
-exports.getUser = async (req, res) => {
-    let id = req.params.uId;
-    let user = await User.findById(id);
-    user.password = null;
-    res.send(user);
+exports.getUser = async id => {
+    let user = await User.findById(id)
+        .lean()
+        .exec();
+    delete user.password;
+    return user;
 };
 
 exports.updateUser = async (req, res) => {
