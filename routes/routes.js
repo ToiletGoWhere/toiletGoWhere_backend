@@ -19,12 +19,12 @@ module.exports = (app, passport) => {
     });
     // Testing endpoint
     app.all("/api/ping", (req, res) => {
-        res.status(200).send("Server is running properly...");
+        res.status(200).send("Server is running properly...\n");
     });
     // Testing endpoint w/ Authentication
     app.all("/api/auth/ping", (req, res) => {
         res.status(200).send(
-            "Server is running properly with Authentication enabled...",
+            "Server is running properly with Authentication enabled...\n",
         );
     });
 
